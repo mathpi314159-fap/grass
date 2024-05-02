@@ -32,7 +32,7 @@ class GrassWs:
             'Sec-WebSocket-Extensions': 'permessage-deflate; client_max_window_bits',
         }
         try:
-            self.websocket = await self.session.ws_connect(uri, proxy_headers=headers, proxy=self.proxy)
+            self.websocket = await self.session.ws_connect(uri, proxy_headers=headers)
         except Exception as e:
             if 'status' in dir(e) and e.status == 403:
                 raise ProxyForbiddenException(f"Low proxy score. Can't connect. Error: {e}")

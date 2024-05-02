@@ -45,8 +45,7 @@ class GrassRest(BaseClient):
         }
 
         response = await self.session.post(url, headers=self.website_headers, json=await self.get_json_params(params,
-                                                                                                              REF_CODE),
-                                           proxy=self.proxy)
+                                                                                                              REF_CODE))
 
         if response.status != 200 or "error" in await response.text():
             if "Email Already Registered" in await response.text():
@@ -77,7 +76,7 @@ class GrassRest(BaseClient):
     async def retrieve_user(self):
         url = 'https://api.getgrass.io/retrieveUser'
 
-        response = await self.session.get(url, headers=self.website_headers, proxy=self.proxy)
+        response = await self.session.get(url, headers=self.website_headers)
 
         return await response.json()
 
@@ -99,7 +98,7 @@ class GrassRest(BaseClient):
     async def claim_reward_for_tier(self):
         url = 'https://api.getgrass.io/claimReward'
 
-        response = await self.session.post(url, headers=self.website_headers, proxy=self.proxy)
+        response = await self.session.post(url, headers=self.website_headers)
 
         assert (await response.json()).get("result") == {}
         return True
@@ -118,7 +117,7 @@ class GrassRest(BaseClient):
     async def get_points(self):
         url = 'https://api.getgrass.io/users/earnings/epochs'
 
-        response = await self.session.get(url, headers=self.website_headers, proxy=self.proxy)
+        response = await self.session.get(url, headers=self.website_headers)
 
         logger.debug(f"{self.id} | Get Points response: {await response.text()}")
 
@@ -152,10 +151,8 @@ class GrassRest(BaseClient):
             'username': self.email,
         }
 
-        response = await self.session.post(url, headers=self.website_headers, data=json.dumps(json_data),
-                                           proxy=self.proxy)
+        response = await self.session.post(url, headers=self.website_headers, data=json.dumps(json_data))
         logger.debug(f"{self.id} | Login response: {await response.text()}")
-
         res_json = await response.json()
 
         if res_json.get("error") is not None:
@@ -175,7 +172,7 @@ class GrassRest(BaseClient):
     async def get_user_info(self):
         url = 'https://api.getgrass.io/users/dash'
 
-        response = await self.session.get(url, headers=self.website_headers, proxy=self.proxy)
+        response = await self.session.get(url, headers=self.website_headers)
         return await response.json()
 
     async def get_device_info(self, device_id: str, user_id: str):
@@ -186,13 +183,13 @@ class GrassRest(BaseClient):
             'user_id': user_id,
         }
 
-        response = await self.session.get(url, headers=self.website_headers, params=params, proxy=self.proxy)
+        response = await self.session.get(url, headers=self.website_headers, params=params)
         return await response.json()
 
     async def get_devices_info(self):
         url = 'https://api.getgrass.io/extension/user-score'
 
-        response = await self.session.get(url, headers=self.website_headers, proxy=self.proxy)
+        response = await self.session.get(url, headers=self.website_headers)
         return await response.json()
 
     async def get_proxy_score_by_device_id_handler(self):
@@ -258,4 +255,4 @@ class GrassRest(BaseClient):
         self.ip = await self.get_ip()
 
     async def get_ip(self):
-        return await (await self.session.get('https://api.ipify.org', proxy=self.proxy)).text()
+        return await (await self.session.get('https://api.ipify.org')).text()

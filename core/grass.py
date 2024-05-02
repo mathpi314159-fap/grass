@@ -24,6 +24,7 @@ from .utils.exception import WebsocketClosedException, LowProxyScoreException, P
     ProxyForbiddenException, ProxyError, WebsocketConnectionFailedError, FailureLimitReachedException, \
     NoProxiesException, ProxyBlockedException, SiteIsDownException, LoginException
 from better_proxy import Proxy
+from aiohttp_socks import ProxyConnector
 
 
 class Grass(GrassWs, GrassRest, FailureCounter):
@@ -37,8 +38,8 @@ class Grass(GrassWs, GrassRest, FailureCounter):
 
         self.db: AccountsDB = db
 
-        self.session: aiohttp.ClientSession = aiohttp.ClientSession(trust_env=True,
-                                                                    connector=aiohttp.TCPConnector(ssl=False))
+        self.connector = ProxyConnector.from_url(proxy) if proxy else None
+        self.session = aiohttp.ClientSession(connector=self.connector)
 
         self.proxies: List[str] = []
         self.is_extra_proxies_left: bool = True
