@@ -234,7 +234,7 @@ class GrassRest(BaseClient):
             'email': self.email,
             'password': self.password,
             'role': 'USER',
-            'referral': random.choice(list(referrals.items())),
+            'referral': REF_CODE,
             'username': self.username,
             'recaptchaToken': "",
             'listIds': [

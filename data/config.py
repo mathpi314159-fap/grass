@@ -10,6 +10,7 @@ STOP_ACCOUNTS_WHEN_SITE_IS_DOWN = True  # stop account for 20 minutes, to reduce
 
 SHOW_LOGS_RARELY = False
 
+REF_CODE = "erxggzon61FWrJ9"
 
 # REGISTER PARAMETRS ONLY
 REGISTER_ACCOUNT_ONLY = True
