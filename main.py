@@ -16,7 +16,7 @@ from core.utils.accounts_db import AccountsDB
 from core.utils.exception import LoginException, NoProxiesException
 from core.utils.generate.person import Person
 from data.config import ACCOUNTS_FILE_PATH, PROXIES_FILE_PATH, REGISTER_ACCOUNT_ONLY, THREADS, REGISTER_DELAY, \
-    CLAIM_REWARDS_ONLY
+    CLAIM_REWARDS_ONLY, MINING_DELAY
 
 
 def bot_info(name: str = ""):
@@ -60,7 +60,7 @@ async def worker_task(_id, account: str, proxy: str = None, db: AccountsDB = Non
 
             await grass.claim_rewards()
         else:
-            await asyncio.sleep(random.uniform(1, 2) * _id)
+            await asyncio.sleep(random.uniform(*MINING_DELAY) * _id)
             logger.info(f"Starting №{_id} | {email} | {password} | {proxy}")
 
             await grass.start()
