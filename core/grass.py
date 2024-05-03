@@ -38,7 +38,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
 
         self.db: AccountsDB = db
 
-        self.connector = ProxyConnector.from_url(proxy) if proxy else None
+        self.connector = ProxyConnector.from_url(proxy, proxy_ssl=False) if proxy else None
         self.session = aiohttp.ClientSession(connector=self.connector)
 
         self.proxies: List[str] = []
