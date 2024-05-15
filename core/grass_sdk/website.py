@@ -44,8 +44,7 @@ class GrassRest(BaseClient):
             'app': 'dashboard',
         }
 
-        response = await self.session.post(url, headers=self.website_headers, json=await self.get_json_params(params,
-                                                                                                              REF_CODE))
+        response = await self.session.post(url, headers=self.website_headers, json=await self.get_json_params())
 
         if response.status != 200 or "error" in await response.text():
             if "Email Already Registered" in await response.text():
