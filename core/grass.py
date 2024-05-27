@@ -38,7 +38,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
 
         self.db: AccountsDB = db
 
-        self.connector = ProxyConnector.from_url(proxy, ssl=False) if proxy else None
+        # self.connector = ProxyConnector.from_url(proxy, ssl=False) if proxy else None
         self.session: aiohttp.ClientSession = aiohttp.ClientSession(trust_env=True,
                                                                     connector=aiohttp.TCPConnector(ssl=False))
 
@@ -113,7 +113,8 @@ class Grass(GrassWs, GrassRest, FailureCounter):
                     else:
                         logger.info(f"{self.id} | Mined grass.")
 
-                    if CHECK_POINTS and not (i % 100):
+                    if CHECK_POINTS:
+                    # if CHECK_POINTS and not (i % 100):
                         points = await self.get_points_handler()
                         logger.info(f"{self.id} | Total points: {points}")
 
@@ -121,6 +122,8 @@ class Grass(GrassWs, GrassRest, FailureCounter):
                         self.fail_reset()
 
                     await asyncio.sleep(19.9)
+            # except (asyncio.CancelledError, KeyboardInterrupt):
+            #     print('Cancelled task')
             except WebsocketClosedException as e:
                 logger.info(f"{self.id} | Websocket closed: {e}. Reconnecting...")
             except ConnectionResetError as e:
